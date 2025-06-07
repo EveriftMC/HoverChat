@@ -1,0 +1,8 @@
+hover-text: "%vault_prefix%&l%player_name%&r &7[&d%player_ping%&5ms&7]&r
+              \n&7▰▰▰▰▰▰▰▰▰▰▰▰▰&r
+              \n&6☆ %vault_prefix%%vault_suffix%&r
+              \n&a\uD83D\uDCB2&r Balance &a%vault_eco_balance%
+              \n&9⌚&f Playtime &9_formatted_playtime_
+              \n&d⚔&f Kills &d%statistic_player_kills%
+              \n&c☠&f Deaths &c%statistic_deaths%
+              \n&7▰▰▰▰▰▰▰▰▰▰▰▰▰&r"
