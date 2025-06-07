@@ -1,46 +1,39 @@
 package com.yxxngtai.hoverchat.listeners;
 
-import com.yxxngtai.hoverchat.HoverChat;
-import com.yxxngtai.hoverchat.utils.TimeFormatter;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.HoverEvent.Action;
-import net.md_5.bungee.api.chat.hover.content.Content;
-import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.Bukkit;
+import com.yxxngtai.hoverchat.HoverChatPlugin;
+import com.yxxngtai.hoverchat.utils.HoverChatUtils;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class ChatHoverListener implements Listener {
-   HoverChat plugin;
 
-   public ChatHoverListener(HoverChat plugin) {
-      this.plugin = plugin;
-   }
+    private final HoverChatPlugin plugin;
 
-   @EventHandler
-   public void onChatTextHover(AsyncPlayerChatEvent event) {
-      Player player = event.getPlayer();
-      TextComponent msg = new TextComponent(
-         ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%vault_prefix%%player_name% &f")) + event.getMessage()
-      );
-      String hoverText = this.plugin.getConfig().getString("hover-text");
-      if (hoverText != null) {
-         int playTimeMinutes = Integer.parseInt(PlaceholderAPI.setPlaceholders(player, "%player_minutes_lived%"));
-         String playTime = TimeFormatter.formatMinutes(playTimeMinutes);
-         hoverText = hoverText.replaceAll("_formatted_playtime_", playTime);
-         msg.setHoverEvent(
-            new HoverEvent(
-               Action.SHOW_TEXT, new Content[]{new Text(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, hoverText)))}
-            )
-         );
-      }
+    public ChatHoverListener(HoverChatPlugin plugin) {
+        this.plugin = plugin;
+    }
 
-      Bukkit.spigot().broadcast(msg);
-      event.setCancelled(true);
-   }
+    @EventHandler
+    public void onChatTextHover(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+        int playTimeMinutes = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60;
+
+        MiniMessage miniMessage = MiniMessage.builder()
+            .editTags(adder -> {
+                adder.resolver(HoverChatUtils.playtimeResolver(playTimeMinutes));
+                adder.resolver(HoverChatUtils.papiTag(player));
+            })
+            .build();
+        TagResolver hoverResolver = Placeholder.styling("hover_format", miniMessage.deserialize(plugin.getHoverFormat()).asHoverEvent());
+
+        event.renderer((source, sourceDisplayName, message, viewer) -> miniMessage.deserialize(plugin.getChatFormat(), hoverResolver));
+    }
 }

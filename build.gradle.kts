@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 group = "com.yxxngtai"
@@ -16,10 +17,20 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.6")
 }
 
-tasks.processResources {
-    filesMatching("plugin.yml") {
-        expand(
-            "version" to version
-        )
+tasks {
+    runServer {
+        minecraftVersion("1.21.5")
+        
+        downloadPlugins.hangar("PlaceholderAPI", "2.11.6")
+        
+        jvmArgs("-Xmx2G", "-Xms2G", "-Dcom.mojang.eula.agree=true")
+    }
+
+    processResources {
+        filesMatching("paper-plugin.yml") {
+            expand(
+                "version" to version
+            )
+        }
     }
 }

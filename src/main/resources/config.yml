@@ -1,8 +1,11 @@
-hover-text: "%vault_prefix%&l%player_name%&r &7[&d%player_ping%&5ms&7]&r
-              \n&7▰▰▰▰▰▰▰▰▰▰▰▰▰&r
-              \n&6☆ %vault_prefix%%vault_suffix%&r
-              \n&a\uD83D\uDCB2&r Balance &a%vault_eco_balance%
-              \n&9⌚&f Playtime &9_formatted_playtime_
-              \n&d⚔&f Kills &d%statistic_player_kills%
-              \n&c☠&f Deaths &c%statistic_deaths%
-              \n&7▰▰▰▰▰▰▰▰▰▰▰▰▰&r"
+chat-format: <hover_format><papi:vault_prefix> <papi:player_name> <dark_gray>»</dark_gray> <message>
+
+hover-format: |
+  <papi:vault_prefix> <bold><papi:player_name></bold> <gray>[<light_purple><papi:player_ping></light_purple>]</gray>
+  <gray>▰▰▰▰▰▰▰▰▰▰▰▰▰</gray>
+  <gold>☆ <white><papi:vault_prefix></gold>
+  <green>\uD83D\uDCB2 <white>Balance</white> <papi:vault_eco_balance></green>
+  <blue>⌚ <white>Playtime</white> <playtime></blue>
+  <light_purple>⚔ <white>Kills</white> <papi:statistic_player_kills></light_purple>
+  <red>☠ <white>Deaths</white> <papi:statistic_deaths>
+  <gray>▰▰▰▰▰▰▰▰▰▰▰▰▰</gray>

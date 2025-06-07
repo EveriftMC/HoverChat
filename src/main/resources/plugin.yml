@@ -1,4 +1,0 @@
-name: HoverChat
-version: $version
-main: com.yxxngtai.hoverchat.HoverChat
-api-version: 1.21.5

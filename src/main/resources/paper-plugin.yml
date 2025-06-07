@@ -1,0 +1,18 @@
+name: HoverChat
+version: $version
+main: com.yxxngtai.hoverchat.HoverChatPlugin
+api-version: 1.21.5
+author: yxxngtai
+contributor: Strokkur24
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
+  
+permissions:
+  hoverchat.command:
+    description: Permission for /hoverchat
+    default: op
