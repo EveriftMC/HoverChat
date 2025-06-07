@@ -3,15 +3,22 @@ package com.yxxngtai.hoverchat.utils;
 import com.yxxngtai.hoverchat.HoverChatPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentIteratorType;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
+import org.eclipse.sisu.space.Streams;
 import org.jspecify.annotations.NullMarked;
+
+import javax.management.Descriptor;
+import java.util.stream.StreamSupport;
 
 @NullMarked
 public class HoverChatUtils {
@@ -95,5 +102,31 @@ public class HoverChatUtils {
             String content = queue.pop().value();
             return Tag.selfClosingInserting(MiniMessage.miniMessage().deserialize(prefix + content, resolvers));
         });
+    }
+    
+    public static TagResolver prefixStyleTag(final Player player) {
+        if (!HoverChatPlugin.hasLuckPerms()) {
+            return TagResolver.empty();
+        }
+
+        LuckPerms lp = HoverChatPlugin.getLuckPerms();
+
+        User user = lp.getUserManager().getUser(player.getUniqueId());
+        if (user == null) {
+            return TagResolver.empty();
+        }
+
+        String prefix = user.getCachedData().getMetaData().getPrefix();
+        if (prefix == null) {
+            return TagResolver.empty();
+        }
+        
+        Component deserialized = MiniMessage.miniMessage().deserialize(prefix + "a");
+        Style bleedingStyle = StreamSupport.stream(deserialized.spliterator(ComponentIteratorType.BREADTH_FIRST), false)
+            .toList()
+            .getLast()
+            .style();
+        
+        return Placeholder.styling("prefix_style", b -> b.merge(bleedingStyle));
     }
 }

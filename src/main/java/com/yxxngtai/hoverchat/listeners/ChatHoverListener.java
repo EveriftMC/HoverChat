@@ -24,7 +24,7 @@ public class ChatHoverListener implements Listener {
     public void onChatTextHover(AsyncChatEvent event) {
         final Player player = event.getPlayer();
         final TagResolver resolvers = TagResolver.resolver(
-            HoverChatUtils.playtimeTag(player), HoverChatUtils.papiTag(player)
+            HoverChatUtils.playtimeTag(player), HoverChatUtils.papiTag(player), HoverChatUtils.prefixStyleTag(player)
         );
 
         final MiniMessage miniMessage = MiniMessage.builder()
