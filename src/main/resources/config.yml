@@ -1,7 +1,7 @@
 chat-format: <hover_format><prefix_style><papi:player_name></prefix_style> <dark_gray>»</dark_gray> <message>
 
 hover-format: |
-  <prefix:' <b><papi:player_name>'> <gray>[<light_purple><papi:player_ping></light_purple>]</gray>
+  <prefix_style><b><papi:player_name></prefix_style> <gray>[<light_purple><papi:player_ping></light_purple>]</gray>
   <gray>▰▰▰▰▰▰▰▰▰▰▰▰▰</gray>
   <gold>☆ <white><prefix/></gold>
   <green>$ <white>Balance</white> <papi:vault_eco_balance></green>
