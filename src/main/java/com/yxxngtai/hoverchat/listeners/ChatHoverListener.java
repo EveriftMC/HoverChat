@@ -6,7 +6,6 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,17 +22,22 @@ public class ChatHoverListener implements Listener {
 
     @EventHandler
     public void onChatTextHover(AsyncChatEvent event) {
-        Player player = event.getPlayer();
-        int playTimeMinutes = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60;
+        final Player player = event.getPlayer();
+        final TagResolver resolvers = TagResolver.resolver(
+            HoverChatUtils.playtimeTag(player), HoverChatUtils.papiTag(player)
+        );
 
-        MiniMessage miniMessage = MiniMessage.builder()
+        final MiniMessage miniMessage = MiniMessage.builder()
             .editTags(adder -> {
-                adder.resolver(HoverChatUtils.playtimeResolver(playTimeMinutes));
-                adder.resolver(HoverChatUtils.papiTag(player));
+                adder.resolver(resolvers);
+                adder.resolver(HoverChatUtils.prefixTag(player, resolvers));
             })
             .build();
-        TagResolver hoverResolver = Placeholder.styling("hover_format", miniMessage.deserialize(plugin.getHoverFormat()).asHoverEvent());
 
-        event.renderer((source, sourceDisplayName, message, viewer) -> miniMessage.deserialize(plugin.getChatFormat(), hoverResolver));
+        final TagResolver hoverResolver = Placeholder.styling("hover_format", miniMessage.deserialize(plugin.getHoverFormat()).asHoverEvent());
+        event.renderer((source, sourceDisplayName, message, viewer) -> miniMessage.deserialize(plugin.getChatFormat(),
+            hoverResolver,
+            Placeholder.component("message", message)
+        ));
     }
 }

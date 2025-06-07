@@ -11,6 +11,10 @@ dependencies:
       load: BEFORE
       required: true
       join-classpath: true
+    LuckPerms:
+      load: BEFORE
+      required: false
+      join-classpath: true
   
 permissions:
   hoverchat.command:

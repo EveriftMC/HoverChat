@@ -1,10 +1,10 @@
-chat-format: <hover_format><papi:vault_prefix> <papi:player_name> <dark_gray>»</dark_gray> <message>
+chat-format: <hover_format><prefix:' <papi:player_name>'> <dark_gray>»</dark_gray> <message>
 
 hover-format: |
-  <papi:vault_prefix> <bold><papi:player_name></bold> <gray>[<light_purple><papi:player_ping></light_purple>]</gray>
+  <prefix:' <b><papi:player_name>'> <gray>[<light_purple><papi:player_ping></light_purple>]</gray>
   <gray>▰▰▰▰▰▰▰▰▰▰▰▰▰</gray>
-  <gold>☆ <white><papi:vault_prefix></gold>
-  <green>\uD83D\uDCB2 <white>Balance</white> <papi:vault_eco_balance></green>
+  <gold>☆ <white><prefix/></gold>
+  <green>$ <white>Balance</white> <papi:vault_eco_balance></green>
   <blue>⌚ <white>Playtime</white> <playtime></blue>
   <light_purple>⚔ <white>Kills</white> <papi:statistic_player_kills></light_purple>
   <red>☠ <white>Deaths</white> <papi:statistic_deaths>
