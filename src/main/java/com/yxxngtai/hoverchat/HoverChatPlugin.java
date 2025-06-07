@@ -20,6 +20,24 @@ public class HoverChatPlugin extends JavaPlugin {
     private @Nullable String chatFormat;
     private @Nullable String hoverFormat;
 
+    public static boolean hasLuckPerms() {
+        try {
+            Class.forName("net.luckperms.api.LuckPerms");
+            return true;
+        } catch (ClassNotFoundException noLuckPermsFound) {
+            return false;
+        }
+    }
+
+    public static LuckPerms getLuckPerms() {
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            return provider.getProvider();
+        }
+
+        throw new IllegalStateException("LuckPerms is not loaded!");
+    }
+
     @Override
     public void onLoad() {
         LiteralCommandNode<CommandSourceStack> command = CommandHoverChat.create(this);
@@ -50,23 +68,5 @@ public class HoverChatPlugin extends JavaPlugin {
     public String getHoverFormat() {
         Preconditions.checkState(hoverFormat != null, "hover-format is not set.");
         return hoverFormat;
-    }
-
-    public static boolean hasLuckPerms() {
-        try {
-            Class.forName("net.luckperms.api.LuckPerms");
-            return true;
-        } catch (ClassNotFoundException noLuckPermsFound) {
-            return false;
-        }
-    }
-
-    public static LuckPerms getLuckPerms() {
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            return provider.getProvider();
-        }
-
-        throw new IllegalStateException("LuckPerms is not loaded!");
     }
 }
