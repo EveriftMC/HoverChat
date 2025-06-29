@@ -73,7 +73,7 @@ public class HoverChatUtils {
             final Component componentPlaceholder = LegacyComponentSerializer.legacySection().deserialize(parsedPlaceholder);
 
             // Finally, return the tag instance to insert the placeholder!
-            return Tag.selfClosingInserting(componentPlaceholder);
+            return Tag.preProcessParsed(MiniMessage.miniMessage().serialize(componentPlaceholder));
         });
     }
 
